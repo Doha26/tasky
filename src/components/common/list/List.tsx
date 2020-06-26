@@ -1,74 +1,80 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FlatList, TouchableOpacity, View} from 'react-native';
-import Text from '~/components/common/Text';
-import Colors from '~/theming/colors';
+import {Alert, TouchableHighlight, TouchableHighlightComponent, TouchableOpacity, View} from 'react-native';
+import {Table, TableWrapper, Row, Cell} from 'react-native-table-component';
+import {MaterialIcons} from '@expo/vector-icons'
 import {styles} from './styles';
+import Colors from "~/theming/colors";
+import {isOdd} from "~/utils/method";
 
 const propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({}),
-    ),
-    horizontal: PropTypes.bool.isRequired,
-    subtitle: PropTypes.string,
-    onViewAllPress: PropTypes.func,
-    title: PropTypes.string.isRequired,
-    renderItem: PropTypes.func.isRequired,
-    keyExtractor: PropTypes.func.isRequired,
+    )
 };
 
 const defaultProps = {
-    data: [],
-    subtitle: null,
-    horizontal: false,
-    onViewAllPress: null,
+    data: []
 };
 
-const List = ({
-                  data,
-                  horizontal,
-                  title,
-                  subtitle,
-                  renderItem,
-                  keyExtractor,
-                  onViewAllPress,
-              }: { data: any; horizontal: boolean; title: string; subtitle: string; renderItem: any; keyExtractor: any; onViewAllPress: () => void }) => {
-    const {textContainer, containerContentStyle} = styles;
+const List = ({data}: {
+    data?: any;
+}) => {
+
+    const ROW_HEAD_TITLES = ['Name', 'Type', 'Delay', 'Actions'];
+    const tableData = [
+        ['Coding', 'Eat', 'Sleep', 'Moving'],
+        ['a', 'b', 'c', 'd'],
+        ['1', '2', '3', '4'],
+    ];
+
+    const _alertIndex = (index) => {
+        Alert.alert(`This is row ${index + 1}`);
+    };
+
+    const ViewActions = (data, index) => (
+        <View style={{
+            flex: 1,
+            flexDirection: "row",
+            alignContent: "center",
+            alignItems: "center",
+            justifyContent: "center",
+        }}>
+            <TouchableOpacity onPress={() => _alertIndex(index)} style={{flexDirection: "row"}}>
+                <MaterialIcons name={"arrow-upward"} size={22} color={Colors.blue}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => _alertIndex(index)} style={{flexDirection: "row"}}>
+                <MaterialIcons name={"arrow-downward"} size={22} color={Colors.black100}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <MaterialIcons name={"delete"} size={22} color={Colors.redOpaque}/>
+            </TouchableOpacity>
+        </View>
+    );
 
     return (
         <View style={{marginBottom: 20, marginVertical: 20, paddingVertical: 10}}>
-            <View style={textContainer}>
-                <View style={{flex: 1}}>
-                    <Text
-                        large
-                        style={{color: Colors.white}}
-                    >
-                        {title}
-                    </Text>
-                    {subtitle && (
-                        <Text small style={{color: Colors.white}}>{subtitle}</Text>
-                    )}
-                </View>
-                {onViewAllPress && (
-                    <View>
-                        <TouchableOpacity
-                            onPress={onViewAllPress}
-                            style={{paddingVertical: 5}}>
-                            <Text small style={{color: Colors.white}}>MORE</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
+            <View style={styles.container}>
+                <Table style={styles.table}>
+                    <Row data={ROW_HEAD_TITLES} style={styles.head} textStyle={styles.titleText}/>
+                    {
+                        tableData.map((rowData, index) => (
+                            <TouchableHighlight key ={index} activeOpacity={0.2} underlayColor={isOdd(index) ? Colors.white : Colors.filterViolet} onPress={()=>_alertIndex(index)}>
+                                <TableWrapper key={index}
+                                              style={Object.assign({}, styles.row, {backgroundColor: isOdd(index) ? Colors.white : Colors.filterViolet})}>
+                                    {
+                                        rowData.map((cellData, cellIndex) => (
+                                            <Cell key={cellIndex}
+                                                  data={cellIndex === 3 ? ViewActions(cellData, index) : cellData}
+                                                  textStyle={styles.text}/>
+                                        ))
+                                    }
+                                </TableWrapper>
+                            </TouchableHighlight>
+                        ))
+                    }
+                </Table>
             </View>
-            <FlatList
-                data={data}
-                horizontal={horizontal}
-                renderItem={renderItem}
-                style={{marginTop: 10}}
-                keyExtractor={keyExtractor}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={containerContentStyle}
-                ItemSeparatorComponent={() => <View style={{marginEnd: 10}}/>}
-            />
         </View>
     );
 };
