@@ -1,13 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import {Provider} from 'react-redux'
+import { StyleSheet} from 'react-native'
+import AppNavigator from './src/navigation/index'
+import store from "./src/redux/store";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Yeah</Text>
-      <StatusBar style="auto" />
-    </View>
+     <Provider store={store}>
+         <AppNavigator/>
+     </Provider>
   );
 }
 

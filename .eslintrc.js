@@ -7,7 +7,9 @@ module.exports = {
     'eslint-comments',
     'import',
     'eslint-comments',
-    '@typescript-eslint', 'react-native', 'prettier'
+    '@typescript-eslint',
+    'react-native',
+    'prettier'
   ],
   settings: {
     'import/resolver': {
