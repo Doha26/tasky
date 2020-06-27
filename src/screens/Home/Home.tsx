@@ -19,6 +19,7 @@ import Loader from "~/components/common/Loader";
 import {contentDelay, contentType} from "~/utils/data";
 import {ContentType} from "~/utils/model/Content";
 import {addContent, processing, removeAllContent, removeContent, updateContent} from "~/actions/content-actions";
+import {showToast} from "~/utils/method";
 
 const Home = () => {
 
@@ -109,9 +110,11 @@ const Home = () => {
                         dispatch(processing());
                         if (flag == ACTIONS.ADD) {
                             dispatch(addContent(mContent));
+                            showToast("Content added successfully");
                         } else {
                             mContent.id = selectedContentId != null ? selectedContentId : 0;
                             dispatch(updateContent(mContent));
+                            showToast("Content Updated successfully");
                         }
                         closeModalAddNewTask();
                     }
@@ -119,6 +122,7 @@ const Home = () => {
             }
         }
     };
+
 
     const handleDelete = (content: ContentType | null) => {
         let message = "";
@@ -139,14 +143,14 @@ const Home = () => {
                 {
                     text: "Confirm", onPress: () => {
                         content !== null ? dispatch(removeContent(content.id ? content.id : undefined)) :
-                            dispatch(removeAllContent())
+                            dispatch(removeAllContent());
+                        showToast("Deleted successfully");
                     }
                 }
             ],
             {cancelable: false}
         );
     };
-
 
     const noContent = (
         <View style={{flex: 1, marginTop: 150, justifyContent: 'center', alignItems: 'center'}}>
