@@ -7,7 +7,7 @@ import Fab from "~/components/common/Fab";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Modalize} from "react-native-modalize";
-import {View, Image} from "react-native";
+import {View, Image, Alert} from "react-native";
 import Text from "~/components/common/Text";
 import styles from "~/screens/Home/styles";
 import LabelInput from "~/components/common/Input";
@@ -18,13 +18,15 @@ import Slider from '@react-native-community/slider';
 import Loader from "~/components/common/Loader";
 import {contentDelay, contentType} from "~/utils/data";
 import {ContentType} from "~/utils/model/Content";
-import {addContent, processing, updateContent} from "~/actions/content-actions";
+import {addContent, processing, removeAllContent, removeContent, updateContent} from "~/actions/content-actions";
 
 const Home = () => {
 
     const ACTIONS = {
         ADD: 'ADD',
         UPDATE: 'UPDATE',
+        DELETE_ROW: 'DELETE_ROW',
+        DELETE_ALL: 'DELETE_ALL',
     };
 
     // Get the dispatcher
@@ -72,18 +74,17 @@ const Home = () => {
         setSelectedDelay(selected);
     };
 
-    const onFilterRow = (content: ContentType, index: number) => {
+    const onFilterRow = (content: ContentType) => {
 
     };
 
-    const onRowSelected = (content: ContentType, index: number) => {
+    const onRowSelected = (content: ContentType) => {
         openModalAddNewTask();
         setEditMode(true);
         setContentName(content.name);
         setSelectedDelay(content.delay);
         setSelectedType(content.type);
         setSelectedContentId(content.id ? content.id : null);
-
     };
 
 
@@ -119,6 +120,34 @@ const Home = () => {
         }
     };
 
+    const handleDelete = (content: ContentType | null) => {
+        let message = "";
+        if (content == null) { // Case to delete all content
+            message = "Confirm delete All content ?"
+        } else { // case to delete specific row
+            message = "Confirm delete this row ?"
+        }
+        Alert.alert(
+            "Confirm",
+            message,
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                {
+                    text: "Confirm", onPress: () => {
+                        content !== null ? dispatch(removeContent(content.id ? content.id : undefined)) :
+                            dispatch(removeAllContent())
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
+    };
+
+
     const noContent = (
         <View style={{flex: 1, marginTop: 150, justifyContent: 'center', alignItems: 'center'}}>
             <Image
@@ -130,10 +159,12 @@ const Home = () => {
     return (
         <AuxHOC>
             <Loader loading={loading} message={""}/>
-            <Header title={"Tasky"} subtitle={"Manage your contents"} emptyList={contents.length == 0}/>
+            <Header title={"Tasky"} subtitle={"Manage your contents"} emptyList={contents.length == 0}
+                    onDeleteAll={handleDelete}/>
             <Container>
                 {contents.length == 0 ? noContent :
-                    <List data={contents} onFilterRow={onFilterRow} onRowSelected={onRowSelected}/>}
+                    <List data={contents} onFilterRow={onFilterRow} onRowSelected={onRowSelected}
+                          onDeleteRow={handleDelete}/>}
             </Container>
             <Modalize
                 ref={modalizeRef}
