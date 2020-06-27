@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, TouchableHighlightComponent, TouchableOpacity, View} from 'react-native';
+import {Alert, TouchableHighlight, TouchableOpacity, View} from 'react-native';
 import {Table, TableWrapper, Row, Cell} from 'react-native-table-component';
 import {MaterialIcons} from '@expo/vector-icons'
 import {styles} from './styles';
@@ -25,6 +25,13 @@ const List = ({data}: {
     const tableData = [
         ['Coding', 'Eat', 'Sleep', 'Moving'],
         ['a', 'b', 'c', 'd'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
+        ['1', '2', '3', '4'],
         ['1', '2', '3', '4'],
     ];
 
@@ -53,7 +60,7 @@ const List = ({data}: {
     );
 
     return (
-        <View style={{marginBottom: 20, marginVertical: 20, paddingVertical: 10}}>
+        <View style={{ marginVertical: 20}}>
             <View style={styles.container}>
                 <Table style={styles.table}>
                     <Row data={ROW_HEAD_TITLES} style={styles.head} textStyle={styles.titleText}/>

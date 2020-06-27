@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        paddingTop: 30,
         backgroundColor: '#fff',
     },
     table: {
@@ -24,11 +23,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.7,
         shadowRadius: 2,
         elevation: 2
-    },
-    singleHead: {
-        width: 80,
-        height: 50,
-        backgroundColor: '#c8e1ff'
     },
     head: {
         flex: 1,
@@ -44,7 +38,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
         color: Color.filterBlack,
-        fontSize: 20
+        fontSize: 18
     },
     text: {
         textAlign: 'center',
@@ -60,9 +54,7 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderLeftColor:Colors.transparent,
         borderRightColor: Colors.transparent
-    },
-    btn: {width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2},
-    btnText: {textAlign: 'center'}
+    }
 });
 
 export {styles};
