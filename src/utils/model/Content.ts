@@ -1,5 +1,5 @@
 export interface ContentType {
-    name: String,
+    name: string,
     id?: number,
     type: string,
     delay: string

@@ -18,20 +18,26 @@ import Slider from '@react-native-community/slider';
 import Loader from "~/components/common/Loader";
 import {contentDelay, contentType} from "~/utils/data";
 import {ContentType} from "~/utils/model/Content";
-import {addContent} from "~/actions/content-actions";
+import {addContent, processing, updateContent} from "~/actions/content-actions";
 
 const Home = () => {
+
+    const ACTIONS = {
+        ADD: 'ADD',
+        UPDATE: 'UPDATE',
+    };
 
     // Get the dispatcher
     const dispatch = useDispatch();
 
     // Initialization
     const modalizeRef = useRef<Modalize>(null);
-    const [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState<boolean>(false);
 
-    const [contentName, setcontentName] = useState('');
-    const [selectedType, setSelectedType] = useState('');
-    const [selectedDelay, setSelectedDelay] = useState('');
+    const [contentName, setContentName] = useState<string>('');
+    const [selectedType, setSelectedType] = useState<string>('');
+    const [selectedDelay, setSelectedDelay] = useState<string>('');
+    const [selectedContentId, setSelectedContentId] = useState<number | null>(null);
 
     // Get the reducer from Redux store
     const {loading, contents} = useSelector(({ContentReducer}: { ContentReducer: Array<ContentType> }) => ContentReducer);
@@ -42,7 +48,12 @@ const Home = () => {
     }, []);
 
     const openModalAddNewTask = () => {
+        setEditMode(false);
         modalizeRef.current?.open();
+        setContentName('');
+        setSelectedDelay('');
+        setSelectedType('');
+        setSelectedContentId(null)
     };
 
     const closeModalAddNewTask = () => {
@@ -50,7 +61,7 @@ const Home = () => {
     };
 
     const handleValueText = (value: string) => {
-        setcontentName(value);
+        setContentName(value);
     };
 
     const handleSelectedType = (selected: string) => {
@@ -61,20 +72,51 @@ const Home = () => {
         setSelectedDelay(selected);
     };
 
-
-    const onSaveContent = () => {
-        const content: ContentType = {
-            name: contentName,
-            type: selectedType,
-            delay: selectedDelay
-        };
-        dispatch(addContent(content));
-        closeModalAddNewTask();
+    const onFilterRow = (content: ContentType, index: number) => {
 
     };
 
-    const onEditContent = () => {
+    const onRowSelected = (content: ContentType, index: number) => {
+        openModalAddNewTask();
         setEditMode(true);
+        setContentName(content.name);
+        setSelectedDelay(content.delay);
+        setSelectedType(content.type);
+        setSelectedContentId(content.id ? content.id : null);
+
+    };
+
+
+    const performAction = (flag: string) => {
+        if (contentName == '' && selectedType == '' && selectedDelay == '') {
+            alert("You should provide all values")
+        } else {
+            if (contentName == '') {
+                alert("You should provide the Content Name");
+            } else {
+                if (selectedType == '') {
+                    alert("You should provide the Content Type");
+                } else {
+                    if (selectedDelay == '') {
+                        alert("You should provide Content Delay");
+                    } else {
+                        const mContent: ContentType = {
+                            name: contentName,
+                            type: selectedType,
+                            delay: selectedDelay
+                        };
+                        dispatch(processing());
+                        if (flag == ACTIONS.ADD) {
+                            dispatch(addContent(mContent));
+                        } else {
+                            mContent.id = selectedContentId != null ? selectedContentId : 0;
+                            dispatch(updateContent(mContent));
+                        }
+                        closeModalAddNewTask();
+                    }
+                }
+            }
+        }
     };
 
     const noContent = (
@@ -90,7 +132,8 @@ const Home = () => {
             <Loader loading={loading} message={""}/>
             <Header title={"Tasky"} subtitle={"Manage your contents"} emptyList={contents.length == 0}/>
             <Container>
-                {contents.length == 0 ? noContent : <List data={contents}/>}
+                {contents.length == 0 ? noContent :
+                    <List data={contents} onFilterRow={onFilterRow} onRowSelected={onRowSelected}/>}
             </Container>
             <Modalize
                 ref={modalizeRef}
@@ -104,10 +147,12 @@ const Home = () => {
                         </Text>
                     </View>
                 }>
-                <LabelInput onTextChange={handleValueText} label={"Name"} placeholder={"Content Name *"}/>
-                <LabelSelect  data={contentType} onValueChange={handleSelectedType} label={"Content type"}/>
-                <LabelSelect  data={contentDelay} onValueChange={handleSelectedDelay}
-                             label={"Content delay"}/>
+                <LabelInput onTextChange={handleValueText} label={"Name"} placeholder={"Content Name *"}
+                            value={contentName}/>
+                <LabelSelect data={contentType} onValueChange={handleSelectedType} label={"Content type"}
+                             value={selectedType}/>
+                <LabelSelect data={contentDelay} onValueChange={handleSelectedDelay}
+                             label={"Content delay"} value={selectedDelay}/>
                 <Slider
                     style={{flex: 1, height: 40, marginHorizontal: 16}}
                     minimumValue={0}
@@ -116,9 +161,10 @@ const Home = () => {
                     maximumTrackTintColor={Colors.filterViolet}
                 />
                 <Button text={editMode ? "Update" : "Save"} color={Colors.violet}
-                        onPress={editMode ? onEditContent : onSaveContent}
+                        onPress={() => editMode ? performAction(ACTIONS.UPDATE) : performAction(ACTIONS.ADD)}
                         tintColor={Colors.white}/>
             </Modalize>
+
             <Fab icon={"add"} onPress={openModalAddNewTask}/>
         </AuxHOC>
     )

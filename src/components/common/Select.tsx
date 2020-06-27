@@ -5,9 +5,11 @@ import Text from "~/components/common/Text";
 import PropTypes from 'prop-types';
 import Colors from "~/theming/colors";
 import RNPickerSelect from 'react-native-picker-select';
+import {randomString} from "~/utils/method";
 
 const propTypes = {
     label: PropTypes.string.isRequired,
+    value:PropTypes.string,
     data: PropTypes.array,
     onValueChange: PropTypes.func
 };
@@ -18,10 +20,12 @@ const defaultProps = {
 
 const LabelSelect = ({
                          label,
+                            value,
                          data,
                          onValueChange,
                      }: {
     label?: string;
+    value?: string;
     data: Array<any>;
     onValueChange: (value: any) => void;
 }) => {
@@ -32,6 +36,8 @@ const LabelSelect = ({
                 {label}
             </Text>
             <RNPickerSelect
+                value={value}
+                itemKey={randomString("a")}
                 items={data}
                 style={pickerSelectStyles}
                 onValueChange={onValueChange}
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        zIndex:1000
+        zIndex: 1000
     } as ViewStyle,
     label: {
         marginLeft: 3,
@@ -75,17 +81,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.gray[500],
     } as TextStyle,
-    innerStyle:{
-        backgroundColor:Colors.gray[200],
-        borderColor:Colors.transparent,
+    innerStyle: {
+        backgroundColor: Colors.gray[200],
+        borderColor: Colors.transparent,
     },
-    dropDownStyle:{
-        zIndex:1000
+    dropDownStyle: {
+        zIndex: 1000
     },
     input: {
         height: 50,
         backgroundColor: Colors.gray[200],
-        paddingHorizontal:8,
+        paddingHorizontal: 8,
         borderRadius: 4,
         marginTop: 5,
     } as TextStyle,

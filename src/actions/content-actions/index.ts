@@ -3,13 +3,13 @@ import {
 } from './types';
 import {ContentType} from "~/utils/model/Content";
 
-export const loading = () => ({type: LOADING});
+export const processing = () => ({type: LOADING});
 
 export const addContent = (content: ContentType) => ({type: ADD_CONTENT, payload: content});
 
 export const removeContent = (id: number) => ({type: REMOVE_CONTENT, payload: id});
 
-export const editContent = (content: ContentType) => ({type: EDIT_CONTENT, payload: content});
+export const updateContent = (content: ContentType) => ({type: EDIT_CONTENT, payload: content});
 
 export const deleteAllContent = () => ({type: REMOVE_ALL_CONTENT, payload: null});
 

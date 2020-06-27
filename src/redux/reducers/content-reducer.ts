@@ -20,7 +20,7 @@ const nextId = (contents: Array<ContentType>) => {
     }, -1) + 1
 };
 
-export default (state = INITIAL_STATE, {type, payload}: { type: string, payload: ContentType }) => {
+export default (state = INITIAL_STATE, {type, payload}: { type: string, payload: any }) => {
     switch (type) {
         case LOADING:
             return {...state, loading: true};
@@ -39,24 +39,27 @@ export default (state = INITIAL_STATE, {type, payload}: { type: string, payload:
                 ]
             };
         case EDIT_CONTENT:
-            return state.contents.map((content: ContentType) => {
-                return content.id === payload.id
-                    ? Object.assign({},
-                        {...state, loading: false},
+            return {
+                ...state,
+                loading: false,
+                contents: state.contents.map((content: ContentType) => {
+                    return content.id === payload.id ?
                         {
-                            id: nextId(state.contents),
+                            ...content,
                             name: payload.name,
                             type: payload.type,
                             delay: payload.delay
-                        })
-                    : content
-            });
+                        } : content
+                })
+            };
         case REMOVE_CONTENT:
-            return state.contents.filter((content: ContentType) => {
-                return content.id !== payload.id
-            });
+            return {
+                ...state,
+                loading: false,
+                contents: state.contents.filter((content: ContentType) => content.id !== payload)
+            };
         case REMOVE_ALL_CONTENT:
-            return {...state, loading: false};
+            return {...state, loading: false, contents: []};
         case FILTER_CONTENT:
             return {...state};
         default:

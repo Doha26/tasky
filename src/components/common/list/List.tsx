@@ -5,10 +5,14 @@ import {Table, TableWrapper, Row, Cell} from 'react-native-table-component';
 import {MaterialIcons} from '@expo/vector-icons'
 import {styles} from './styles';
 import Colors from "~/theming/colors";
-import {isOdd} from "~/utils/method";
+import {useDispatch} from "react-redux"
+import {isOdd, randomInt} from "~/utils/method";
 import {ContentType} from "~/utils/model/Content";
+import {removeContent} from "~/actions/content-actions";
 
 const propTypes = {
+    onFilterRow: PropTypes.func,
+    onRowSelected: PropTypes.func,
     data: PropTypes.arrayOf(
         PropTypes.shape({}),
     )
@@ -18,17 +22,33 @@ const defaultProps = {
     data: []
 };
 
-const List = ({data}: {
+const List = ({onFilterRow, onRowSelected, data}: {
+    onFilterRow: (data: ContentType, index: number) => void
+    onRowSelected: (data: ContentType, index: number) => void
     data: Array<ContentType>;
 }) => {
 
     const ROW_HEAD_TITLES = ['Name', 'Type', 'Delay', 'Actions'];
 
-    const _alertIndex = (index) => {
-        Alert.alert(`This is row ${index + 1}`);
-    };
+    const dispatch = useDispatch();
 
-    const ViewActions = (data:ContentType, index) => (
+
+    const displayConfirmDelete = (id: number) =>
+        Alert.alert(
+            "Confirm",
+            "Confirm delete this content",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                {text: "Confirm", onPress: () => dispatch(removeContent(id))}
+            ],
+            {cancelable: false}
+        );
+
+    const ViewActions = (content: ContentType, index: number) => (
         <View style={{
             flex: 1,
             flexDirection: "row",
@@ -36,13 +56,13 @@ const List = ({data}: {
             alignItems: "center",
             justifyContent: "center",
         }}>
-            <TouchableOpacity onPress={() => _alertIndex(index)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow(content, index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-upward"} size={22} color={Colors.blue}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => _alertIndex(index)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow(content, index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-downward"} size={22} color={Colors.black100}/>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => displayConfirmDelete(index)}>
                 <MaterialIcons name={"delete"} size={22} color={Colors.redOpaque}/>
             </TouchableOpacity>
         </View>
@@ -55,25 +75,25 @@ const List = ({data}: {
                     <Row data={ROW_HEAD_TITLES} style={styles.head} textStyle={styles.titleText}/>
                     {
                         data.map((content: ContentType, index) => (
-
-                            <TouchableHighlight key={index} activeOpacity={0.2}
+                            <TouchableHighlight key={(content.id ? content.id : randomInt(0, 10000))}
+                                                activeOpacity={0.2}
                                                 underlayColor={isOdd(index) ? Colors.white : Colors.filterViolet}
-                                                onPress={() => _alertIndex(index)}>
-                                <TableWrapper key={index}
+                                                onPress={() => onRowSelected(content, index)}>
+                                <TableWrapper key={(content.id ? content.id + 1 : randomInt(0, 10000))}
                                               style={Object.assign({}, styles.row, {backgroundColor: isOdd(index) ? Colors.white : Colors.filterViolet})}>
-                                    <Cell key={content.id}
+                                    <Cell key={(content.id ? content.id + 2 : randomInt(0, 10000))}
                                           data={content.name}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={content.id}
+                                    <Cell key={(content.id ? content.id + 3 : randomInt(0, 10000))}
                                           data={content.type}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={content.id}
+                                    <Cell key={(content.id ? content.id + 4 : randomInt(0, 10000))}
                                           data={content.delay}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={content.id}
+                                    <Cell key={(content.id ? content.id + 5 : randomInt(0, 10000))}
                                           data={ViewActions(content, index)}
                                           textStyle={styles.text}/>
 
