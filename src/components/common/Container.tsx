@@ -30,7 +30,7 @@ const Container = ({
     transparency?: boolean;
 }) => (
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.white}}>
-        <StatusBar style="dark"/>
+        <StatusBar style="light"/>
         <ScrollView
             scrollEventThrottle={1}
             onScroll={({nativeEvent}) => onScroll ? onScroll(nativeEvent.contentOffset.y) : null}

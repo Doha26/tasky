@@ -1,6 +1,6 @@
-export interface TaskType {
+export interface ContentType {
     name: String,
-    id: number,
+    id?: number,
     type: string,
     delay: string
 }

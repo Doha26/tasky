@@ -10,15 +10,18 @@ import styles from "~/components/common/header/styles";
 const propTypes = {
     title: PropTypes.string,
     subTitle: PropTypes.string,
+    emptyList: PropTypes.bool
 };
 
 const defaultProps = {
     title: string,
 };
 
-const Header = ({title, subtitle}: { title: string, subtitle?: string; }) => (
+const Header = ({title, subtitle, emptyList}: { title: string, subtitle?: string; emptyList: boolean }) => (
+
+
     <View style={styles.container}>
-        <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
             <TouchableOpacity>
                 <MaterialIcons
                     name="menu"
@@ -34,8 +37,11 @@ const Header = ({title, subtitle}: { title: string, subtitle?: string; }) => (
                 : <Text style={Object.assign({}, styles.titleStyle, {marginLeft: 40})}>{title}</Text>
             }
         </View>
-        <TouchableOpacity style={{marginTop:16}}>
-            <MaterialIcons name={"delete"} size={32} color={Colors.white}/>
+        <TouchableOpacity style={{marginTop: 16}}>
+            {emptyList ? <MaterialIcons name={"more-vert"} size={32} color={Colors.white}/> :
+                <MaterialIcons name={"delete"} size={32} color={Colors.white}/>}
+
+
         </TouchableOpacity>
     </View>
 );

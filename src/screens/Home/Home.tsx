@@ -5,8 +5,9 @@ import List from "~/components/common/list/List";
 import Header from "~/components/common/header";
 import Fab from "~/components/common/Fab";
 import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {Modalize} from "react-native-modalize";
-import {View} from "react-native";
+import {View, Image} from "react-native";
 import Text from "~/components/common/Text";
 import styles from "~/screens/Home/styles";
 import LabelInput from "~/components/common/Input";
@@ -15,47 +16,60 @@ import Button from "~/components/common/Button";
 import Colors from "~/theming/colors";
 import Slider from '@react-native-community/slider';
 import Loader from "~/components/common/Loader";
+import {contentDelay, contentType} from "~/utils/data";
+import {ContentType} from "~/utils/model/Content";
+import {addContent} from "~/actions/content-actions";
 
 const Home = () => {
 
+    // Get the dispatcher
+    const dispatch = useDispatch();
+
+    // Initialization
     const modalizeRef = useRef<Modalize>(null);
-    const [editMode, setEditMode] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
-    const contentType = [
-        {label: "Article", value: "Art"},
-        {label: "Video", value: "Vid"},
-        {label: "Cartoon", value: "Cart"},
-        {label: "Exercise", value: "Ext"},
-    ];
+    const [contentName, setcontentName] = useState('');
+    const [selectedType, setSelectedType] = useState('');
+    const [selectedDelay, setSelectedDelay] = useState('');
 
-    const contentDelay = [
-        {label: "1s", value: "1s"},
-        {label: "5s", value: "5s"},
-        {label: "20s", value: "20s"},
-        {label: "1min", value: "1min"},
-        {label: "3min", value: "3min"},
-        {label: "5min", value: "5min"},
-    ];
+    // Get the reducer from Redux store
+    const {loading, contents} = useSelector(({ContentReducer}: { ContentReducer: Array<ContentType> }) => ContentReducer);
 
 
     useEffect(() => {
-        modalizeRef.current?.open();
+        //modalizeRef.current?.open();
     }, []);
 
     const openModalAddNewTask = () => {
         modalizeRef.current?.open();
     };
 
-    const handleTextChange = (text: string) => {
-        console.log(text);
+    const closeModalAddNewTask = () => {
+        modalizeRef.current?.close();
     };
 
-    const handleValueChange = (value: any) => {
-        console.log(value);
+    const handleValueText = (value: string) => {
+        setcontentName(value);
     };
+
+    const handleSelectedType = (selected: string) => {
+        setSelectedType(selected);
+    };
+
+    const handleSelectedDelay = (selected: string) => {
+        setSelectedDelay(selected);
+    };
+
 
     const onSaveContent = () => {
+        const content: ContentType = {
+            name: contentName,
+            type: selectedType,
+            delay: selectedDelay
+        };
+        dispatch(addContent(content));
+        closeModalAddNewTask();
 
     };
 
@@ -63,17 +77,24 @@ const Home = () => {
         setEditMode(true);
     };
 
+    const noContent = (
+        <View style={{flex: 1, marginTop: 150, justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+                style={styles.defaultImg}
+                source={require('~/assets/img_home.jpg')}
+            />
+        </View>
+    );
     return (
         <AuxHOC>
             <Loader loading={loading} message={""}/>
-            <Header title={"Tasky"} subtitle={"Manage your contents"}/>
+            <Header title={"Tasky"} subtitle={"Manage your contents"} emptyList={contents.length == 0}/>
             <Container>
-                <List/>
-
+                {contents.length == 0 ? noContent : <List data={contents}/>}
             </Container>
             <Modalize
                 ref={modalizeRef}
-                modalHeight={590}
+                modalHeight={540}
                 HeaderComponent={
                     <View
                         style={styles.headerModal}>
@@ -83,9 +104,10 @@ const Home = () => {
                         </Text>
                     </View>
                 }>
-                <LabelInput onTextChange={handleTextChange} label={"Name"} placeholder={"Content Name *"}/>
-                <LabelSelect zIndex={10} data={contentType} onValueChange={handleValueChange} label={"Content type"}/>
-                <LabelSelect zIndex={5} data={contentDelay} onValueChange={handleValueChange} label={"Content delay"}/>
+                <LabelInput onTextChange={handleValueText} label={"Name"} placeholder={"Content Name *"}/>
+                <LabelSelect  data={contentType} onValueChange={handleSelectedType} label={"Content type"}/>
+                <LabelSelect  data={contentDelay} onValueChange={handleSelectedDelay}
+                             label={"Content delay"}/>
                 <Slider
                     style={{flex: 1, height: 40, marginHorizontal: 16}}
                     minimumValue={0}

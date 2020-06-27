@@ -9,6 +9,7 @@ const propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     onTextChange: PropTypes.func,
+    value:PropTypes.string,
     autoFocus: PropTypes.func,
 };
 
@@ -20,11 +21,13 @@ const LabelInput = ({
                         label,
                         placeholder,
                         onTextChange,
+    value,
                         autoFocus,
                     }: {
-    label?: string; value?: string;
+    label?: string;
+    value?: string;
     placeholder?: string;
-    onTextChange: (value) => void;
+    onTextChange: (event) => void;
     autoFocus?: boolean;
 }) => {
     return (
@@ -35,6 +38,7 @@ const LabelInput = ({
             <TextInput
                 style={styles.input}
                 placeholder={placeholder}
+                value={value}
                 autoFocus={autoFocus}
                 underlineColorAndroid='transparent'
                 onChangeText={(text) => onTextChange(text)}

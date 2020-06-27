@@ -1,0 +1,65 @@
+import {
+    ADD_CONTENT,
+    EDIT_CONTENT,
+    FILTER_CONTENT, LOADING,
+    REMOVE_ALL_CONTENT,
+    REMOVE_CONTENT
+} from "~/actions/content-actions/types";
+import {ContentType} from "~/utils/model/Content";
+import {ContentReducer} from "~/utils/model/ContentReducer";
+
+const INITIAL_STATE: ContentReducer = {
+    contents: [],
+    loading: false
+};
+
+// This method allows to define the NextId for the newly added content
+const nextId = (contents: Array<ContentType>) => {
+    return contents.reduce((maxId, content: ContentType) => {
+        return Math.max(content.id ? content.id : 0, maxId)
+    }, -1) + 1
+};
+
+export default (state = INITIAL_STATE, {type, payload}: { type: string, payload: ContentType }) => {
+    switch (type) {
+        case LOADING:
+            return {...state, loading: true};
+        case ADD_CONTENT:
+            return {
+                ...state,
+                loading: false,
+                contents: [
+                    ...state.contents,
+                    {
+                        id: nextId(state.contents),
+                        name: payload.name,
+                        type: payload.type,
+                        delay: payload.delay,
+                    }
+                ]
+            };
+        case EDIT_CONTENT:
+            return state.contents.map((content: ContentType) => {
+                return content.id === payload.id
+                    ? Object.assign({},
+                        {...state, loading: false},
+                        {
+                            id: nextId(state.contents),
+                            name: payload.name,
+                            type: payload.type,
+                            delay: payload.delay
+                        })
+                    : content
+            });
+        case REMOVE_CONTENT:
+            return state.contents.filter((content: ContentType) => {
+                return content.id !== payload.id
+            });
+        case REMOVE_ALL_CONTENT:
+            return {...state, loading: false};
+        case FILTER_CONTENT:
+            return {...state};
+        default:
+            return state;
+    }
+};

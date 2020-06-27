@@ -48,7 +48,11 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         textAlign: "center",
         color: Colors.gray[800]
-    }
+    },
+    defaultImg: {
+        width: 350,
+        height: 270,
+    },
 });
 
 export default styles;

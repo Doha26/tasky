@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import TodoReducer from './todo-reducer'
+import ContentReducer from './content-reducer'
 
-export default combineReducers({TodoReducer})
+export default combineReducers({ContentReducer})
 

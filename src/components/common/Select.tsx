@@ -4,11 +4,10 @@ import {TextStyle, View, ViewStyle} from "react-native";
 import Text from "~/components/common/Text";
 import PropTypes from 'prop-types';
 import Colors from "~/theming/colors";
-import DropDownPicker from 'react-native-dropdown-picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 const propTypes = {
     label: PropTypes.string.isRequired,
-    zIndex:PropTypes.number,
     data: PropTypes.array,
     onValueChange: PropTypes.func
 };
@@ -19,37 +18,50 @@ const defaultProps = {
 
 const LabelSelect = ({
                          label,
-                         zIndex,
                          data,
                          onValueChange,
                      }: {
     label?: string;
-    zIndex?: number;
     data: Array<any>;
     onValueChange: (value: any) => void;
 }) => {
-    const handleSelected = (selected:any) => {
-        onValueChange(selected)
-    };
 
     return (
-        <View style={Object.assign({},styles.container,{zIndex:zIndex})}>
+        <View style={styles.container}>
             <Text style={styles.label}>
                 {label}
             </Text>
-            <DropDownPicker
-                placeholder={"select"}
+            <RNPickerSelect
                 items={data}
-                defaultIndex={0}
-                style={styles.innerStyle}
-                containerStyle={styles.input}
-                dropDownStyle={styles.dropDownStyle}
-                labelStyle={{fontSize: 16, color: Colors.black100, fontWeight:'500'}}
-                onChangeItem={handleSelected}
+                style={pickerSelectStyles}
+                onValueChange={onValueChange}
             />
         </View>
     )
 };
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        height: 50,
+        backgroundColor: Colors.gray[200],
+        borderRadius: 4,
+        marginTop: 5,
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        height: 50,
+        backgroundColor: Colors.gray[200],
+        borderRadius: 4,
+        marginTop: 5,
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -66,7 +78,6 @@ const styles = StyleSheet.create({
     innerStyle:{
         backgroundColor:Colors.gray[200],
         borderColor:Colors.transparent,
-
     },
     dropDownStyle:{
         zIndex:1000
