@@ -72,7 +72,7 @@ const Button = ({
 
   if (disabled || loading) {
     // @ts-ignore
-    buttonContainerStyle.push({backgroundColor: Colors.lightGrey});
+    buttonContainerStyle.push({backgroundColor: Colors.violet});
 
     return (
       <TouchableWithoutFeedback>

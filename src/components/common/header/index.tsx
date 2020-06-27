@@ -34,7 +34,7 @@ const Header = ({title, subtitle}: { title: string, subtitle?: string; }) => (
                 : <Text style={Object.assign({}, styles.titleStyle, {marginLeft: 40})}>{title}</Text>
             }
         </View>
-        <TouchableOpacity style={{alignSelf: "center", justifyContent: "center"}}>
+        <TouchableOpacity style={{marginTop:16}}>
             <MaterialIcons name={"delete"} size={32} color={Colors.white}/>
         </TouchableOpacity>
     </View>
