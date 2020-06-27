@@ -35,7 +35,7 @@ const Fab = ({
             onPress={onPress}
             style={fabContainerStyle}>
             <View style={styles.fabContainer}>
-              <MaterialIcons name={icon} size={32} color={Colors.white}/>
+                <MaterialIcons name={icon} size={32} color={Colors.white}/>
             </View>
         </TouchableOpacity>
     );
@@ -49,13 +49,13 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         borderRadius: 6,
     },
-    fabContainer:{
-        width:65,
-        height:65,
-        backgroundColor:Colors.violet,
-        position:'absolute',
-        right:20,
-        bottom:70,
+    fabContainer: {
+        width: 65,
+        height: 65,
+        backgroundColor: Colors.violet,
+        position: 'absolute',
+        right: 20,
+        bottom: 60,
         borderRadius: 32.5,
         alignItems: 'center',
         justifyContent: 'center',

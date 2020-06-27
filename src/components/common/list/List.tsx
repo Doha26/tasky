@@ -60,7 +60,7 @@ const List = ({data}: {
     );
 
     return (
-        <View style={{ marginVertical: 20}}>
+        <View style={{ marginBottom: 20, marginTop:1}}>
             <View style={styles.container}>
                 <Table style={styles.table}>
                     <Row data={ROW_HEAD_TITLES} style={styles.head} textStyle={styles.titleText}/>
