@@ -14,11 +14,13 @@ import LabelSelect from "~/components/common/Select";
 import Button from "~/components/common/Button";
 import Colors from "~/theming/colors";
 import Slider from '@react-native-community/slider';
+import Loader from "~/components/common/Loader";
 
 const Home = () => {
 
     const modalizeRef = useRef<Modalize>(null);
     const [editMode, setEditMode] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const contentType = [
         {label: "Article", value: "Art"},
@@ -63,9 +65,11 @@ const Home = () => {
 
     return (
         <AuxHOC>
+            <Loader loading={loading} message={""}/>
             <Header title={"Tasky"} subtitle={"Manage your contents"}/>
             <Container>
                 <List/>
+
             </Container>
             <Modalize
                 ref={modalizeRef}
@@ -95,7 +99,6 @@ const Home = () => {
             </Modalize>
             <Fab icon={"add"} onPress={openModalAddNewTask}/>
         </AuxHOC>
-
     )
 };
 
