@@ -11,6 +11,8 @@ import Text from "~/components/common/Text";
 import styles from "~/screens/Home/styles";
 import LabelInput from "~/components/common/Input";
 import LabelSelect from "~/components/common/Select";
+import Button from "~/components/common/Button";
+import Colors from "~/theming/colors";
 
 const Home = () => {
 
@@ -41,9 +43,13 @@ const Home = () => {
         console.log(text);
     };
 
-    const handleValueChange = (value:any) => {
+    const handleValueChange = (value: any) => {
         console.log(value);
     };
+
+   const  onSaveContent = () =>{
+
+   };
 
     return (
         <AuxHOC>
@@ -62,11 +68,11 @@ const Home = () => {
                             Add new content
                         </Text>
                     </View>
-                }
-            >
+                }>
                 <LabelInput onTextChange={handleTextChange} label={"Name"} placeholder={"Task Name *"}/>
-                <LabelSelect zIndex={6000} data={contentType} onValueChange={handleValueChange} label={"Content type"}/>
-               <LabelSelect zIndex={5000} data={contentDelay} onValueChange={handleValueChange} label={"Content delay"}/>
+                <LabelSelect zIndex={10} data={contentType} onValueChange={handleValueChange} label={"Content type"}/>
+                <LabelSelect zIndex={5} data={contentDelay} onValueChange={handleValueChange} label={"Content delay"}/>
+                <Button text={"Save"} color={Colors.violet} onPress={onSaveContent} tintColor={Colors.white}/>
             </Modalize>
             <Fab icon={"add"} onPress={openModalAddNewTask}/>
         </AuxHOC>

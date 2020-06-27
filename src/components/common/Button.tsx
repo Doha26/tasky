@@ -63,7 +63,7 @@ const Button = ({
       <Text
         bold
         color={tintColor}
-        style={{textAlign: 'center'}}
+        style={{textAlign: 'center', fontWeight:'bold'}}
       >
         {text}
       </Text>
@@ -90,6 +90,7 @@ const Button = ({
 
   return (
     <TouchableOpacity
+        activeOpacity={0.8}
       onPress={onPress}
       style={buttonContainerStyle}
     >
@@ -102,11 +103,12 @@ const Button = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    marginHorizontal: 8,
+    marginHorizontal: 16,
     marginVertical: 2,
     borderRadius: 6,
+    color:Colors.white
   },
 });
 
