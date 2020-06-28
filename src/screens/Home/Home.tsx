@@ -249,7 +249,7 @@ const Home = () => {
     };
 
     const noContent = (
-        <View style={{flex: 1, marginTop: 150, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.noContent}>
             <Image
                 style={styles.defaultImg}
                 source={require('~/assets/img_home.jpg')}
@@ -305,7 +305,6 @@ const Home = () => {
                         onPress={() => editMode ? performAction(ACTIONS.UPDATE) : performAction(ACTIONS.ADD)}
                         tintColor={Colors.white}/>
             </Modalize>
-
             <Fab icon={"add"} onPress={openModalAddNewTask}/>
         </AuxHOC>
     )

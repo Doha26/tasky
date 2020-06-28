@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.violet,
         position: 'absolute',
         right: 20,
-        bottom: 60,
+        bottom: 50,
         borderRadius: 32.5,
         alignItems: 'center',
         justifyContent: 'center',
