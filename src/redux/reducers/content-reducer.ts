@@ -53,19 +53,11 @@ export default (state = INITIAL_STATE, {type, payload}: { type: string, payload:
                 })
             };
         case REMOVE_CONTENT:
-            if (state.contents.length == 1) {
-                return {
-                    ...state,
-                    loading: false,
-                    contents: []
-                };
-            } else {
-                return {
-                    ...state,
-                    loading: false,
-                    contents: state.contents.filter((content: ContentType) => content.id !== payload)
-                };
-            }
+            return {
+                ...state,
+                loading: false,
+                contents: state.contents.length == 1 ? [] : state.contents.filter((content: ContentType) => content.id !== payload)
+            };
         case REMOVE_ALL_CONTENT:
             return {...state, loading: false, contents: []};
         case FILTER_CONTENT:
@@ -73,7 +65,7 @@ export default (state = INITIAL_STATE, {type, payload}: { type: string, payload:
                 ...state,
                 loading: false,
                 contents: payload.newContent
-            }
+            };
         default:
             return state;
     }
