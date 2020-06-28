@@ -21,6 +21,8 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "description": "Todo/Task React native application to showcase CRUD operations. Buit with ReactJS(React Hooks), Typescript",
+    "githubUrl": "https://github.com/Doha26/tasky"
   }
 }

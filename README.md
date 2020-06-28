@@ -48,7 +48,7 @@
  
  $ yarn  OR npm install (if you are using npm )
 
- $ expo start
+ $ yarn start
  
  ```
  

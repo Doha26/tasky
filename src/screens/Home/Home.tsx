@@ -4,7 +4,7 @@ import AuxHOC from "~/container/AuxHOC";
 import List from "~/components/common/list/List";
 import Header from "~/components/common/header";
 import Fab from "~/components/common/Fab";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Modalize} from "react-native-modalize";
 import {View, Image, Alert} from "react-native";
@@ -55,10 +55,6 @@ const Home = () => {
     // Get the reducer from Redux store
     const {loading, contents} = useSelector(({ContentReducer}: { ContentReducer: Array<ContentType> }) => ContentReducer);
 
-
-    useEffect(() => {
-        //modalizeRef.current?.open();
-    }, []);
 
     const openModalAddNewTask = () => {
         setEditMode(false);
@@ -184,7 +180,7 @@ const Home = () => {
         openModalAddNewTask();
         setEditMode(true);
         setContentName(content.name);
-        setTmpDelay(content.delay)
+        setTmpDelay(content.delay);
         setSelectedDelay(content.delay);
         setSelectedType(content.type);
         setSelectedContentId(content.id ? content.id : null);
