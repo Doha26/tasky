@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     table: {
-        shadowColor: Colors.black40,
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.7,
-        shadowRadius: 2,
-        elevation: 2
+        //shadowColor: Colors.black40,
+        //shadowOffset: {width: 0, height: 2},
+        //shadowOpacity: 0.7,
+        //shadowRadius: 2,
+        //elevation: 2
     },
     head: {
         flex: 1,

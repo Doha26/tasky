@@ -1,8 +1,9 @@
 import React from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import {ScrollView} from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '~/theming/colors';
 import {StatusBar} from "expo-status-bar";
+import {SafeAreaView} from "react-navigation";
 
 const propTypes = {
     children: PropTypes.oneOfType([
@@ -29,7 +30,8 @@ const Container = ({
     children?: React.ReactNode;
     transparency?: boolean;
 }) => (
-    <SafeAreaView style={{flex: 1, backgroundColor: Colors.white}}>
+
+    <SafeAreaView style={{flex: 1, backgroundColor: Colors.white}} forceInset={{bottom:'always'}}>
         <StatusBar style="light"/>
         <ScrollView
             scrollEventThrottle={1}
