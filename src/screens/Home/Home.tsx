@@ -49,6 +49,7 @@ const Home = () => {
     const [contentName, setContentName] = useState<string>('');
     const [selectedType, setSelectedType] = useState<string>('');
     const [selectedDelay, setSelectedDelay] = useState<string>('');
+    const [tmpDelay, setTmpDelay] = useState<string>('');
     const [selectedContentId, setSelectedContentId] = useState<number | null>(null);
 
     // Get the reducer from Redux store
@@ -64,6 +65,7 @@ const Home = () => {
         modalizeRef.current?.open();
         setContentName('');
         setSelectedDelay('');
+        setTmpDelay('');
         setSelectedType('');
         setSelectedContentId(null)
     };
@@ -82,6 +84,32 @@ const Home = () => {
 
     const handleSelectedDelay = (selected: string) => {
         setSelectedDelay(selected);
+    };
+
+    const updateContentDelay = (value: number) => {
+        let newDelay = '';
+        if (value < 60) {
+            newDelay = `${parseInt(String(value))}s`
+        } else {
+            newDelay = `${parseInt(String(value / 60))}min`
+        }
+        setSelectedDelay(newDelay)
+    };
+
+    const getMinDelayValue = () => {
+        let minDelay = 0;
+        if(tmpDelay != null){
+
+            const firstchar = parseInt(tmpDelay.charAt(0));
+            const secondChar = tmpDelay.charAt(1);
+
+            if (secondChar === 'm' || secondChar === 'M') { // Current Delay is in Min
+                minDelay = firstchar * 60;  // to get the value in second for the Slider
+            } else {
+                minDelay = firstchar  // return the value in second
+            }
+        }
+        return minDelay;
     };
 
     const onFilterRow = (flag: string, currentIndex: number) => {
@@ -156,6 +184,7 @@ const Home = () => {
         openModalAddNewTask();
         setEditMode(true);
         setContentName(content.name);
+        setTmpDelay(content.delay)
         setSelectedDelay(content.delay);
         setSelectedType(content.type);
         setSelectedContentId(content.id ? content.id : null);
@@ -260,13 +289,22 @@ const Home = () => {
                              value={selectedType}/>
                 <LabelSelect data={contentDelay} onValueChange={handleSelectedDelay}
                              label={"Content delay"} value={selectedDelay}/>
-                {editMode ? <Slider
-                    style={{flex: 1, height: 40, marginHorizontal: 16}}
-                    minimumValue={0}
-                    maximumValue={1}
-                    minimumTrackTintColor={Colors.violet}
-                    maximumTrackTintColor={Colors.filterViolet}
-                /> : null}
+                {editMode ?
+                    <View style={{marginHorizontal: 16}}>
+                        <Text style={{fontSize: 13, alignSelf: "flex-end", color: Colors.gray[500], marginTop: 10}}>
+                            {selectedDelay}
+                        </Text>
+                        <Slider
+                            style={{flex: 1, height: 40}}
+                            minimumValue={0}
+                            value={getMinDelayValue()}
+                            maximumValue={300}
+                            minimumTrackTintColor={Colors.violet}
+                            maximumTrackTintColor={Colors.filterViolet}
+                            onValueChange={updateContentDelay}
+                        />
+                    </View>
+                    : null}
                 <Button text={editMode ? "Update" : "Save"} color={Colors.violet}
                         onPress={() => editMode ? performAction(ACTIONS.UPDATE) : performAction(ACTIONS.ADD)}
                         tintColor={Colors.white}/>
