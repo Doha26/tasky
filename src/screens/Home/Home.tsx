@@ -84,33 +84,38 @@ const Home = () => {
         setSelectedDelay(selected);
     };
 
-    const onFilterRow = (content: ContentType, flag: string, currentIndex: number) => {
-        let upIndex: number, downIndex: number, payload: any = {flag: '', currentIndex: 0, upIndex: 0, downIndex: 0};
-
+    const onFilterRow = (flag: string, currentIndex: number) => {
+        let upIndex: number,
+            payload: any = {flag: '', newContent: {}};
         if (flag === ACTIONS.FILTER_UP) {
             payload.flag = ACTIONS.FILTER_UP;
             if (contents.length !== 1) {
                 if (contents.length == 2) {
                     if (currentIndex != 0) {
                         upIndex = 0;
-                        downIndex = 1;
 
-                        payload.currentIndex = currentIndex;
-                        payload.upIndex = upIndex;
-                        payload.downIndex = downIndex;
+                        const contentArray = contents;
+                        const tmp = contentArray[upIndex];
 
-                        dispatch(filterContent(payload);
+                        contentArray[upIndex] = contentArray[currentIndex];
+                        contentArray[currentIndex] = tmp;
+                        payload.newContent = contentArray;
+
+                        dispatch(filterContent(payload));
                     }
                 } else {
                     if (currentIndex != 0) {
                         upIndex = currentIndex - 1;
-                        downIndex = currentIndex + 1;
 
-                        payload.currentIndex = currentIndex;
-                        payload.upIndex = upIndex;
-                        payload.downIndex = downIndex;
+                        const contentArray = contents;
+                        const tmp = contentArray[upIndex];
 
-                        dispatch(filterContent(payload);
+                        contentArray[upIndex] = contentArray[currentIndex];
+                        contentArray[currentIndex] = tmp;
+
+                        payload.newContent = contentArray;
+
+                        dispatch(filterContent(payload));
                     }
                 }
             }
@@ -119,30 +124,31 @@ const Home = () => {
             if (contents.length !== 1) {
                 if (contents.length == 2) {
                     if (currentIndex != 1) {
-                        upIndex = 0;
-                        downIndex = 1;
 
-                        payload.currentIndex = currentIndex;
-                        payload.upIndex = upIndex;
-                        payload.downIndex = downIndex;
+                        const contentArray = contents;
+                        const tmp = contentArray[currentIndex + 1];
 
-                        dispatch(filterContent(payload);
+                        contentArray[currentIndex + 1] = contentArray[currentIndex];
+                        contentArray[currentIndex] = tmp;
+
+                        payload.newContent = contentArray;
+
+                        dispatch(filterContent(payload));
                     }
                 } else {
-                    if (currentIndex != 0) {
-                        
-                        upIndex = currentIndex - 1;
-                        downIndex = currentIndex + 1;
+                    if (currentIndex != contents.length - 1) {
 
-                        payload.currentIndex = currentIndex;
-                        payload.upIndex = upIndex;
-                        payload.downIndex = downIndex;
+                        const contentArray = contents;
+                        const tmp = contentArray[currentIndex + 1];
 
-                        dispatch(filterContent(payload);
+                        contentArray[currentIndex + 1] = contentArray[currentIndex];
+                        contentArray[currentIndex] = tmp;
+                        payload.newContent = contentArray;
+
+                        dispatch(filterContent(payload));
                     }
                 }
             }
-            dispatch(filterContent(ACTIONS.FILTER_DOWN, content.id))
         }
     };
 
@@ -154,7 +160,6 @@ const Home = () => {
         setSelectedType(content.type);
         setSelectedContentId(content.id ? content.id : null);
     };
-
 
     const performAction = (flag: string) => {
         if (contentName == '' && selectedType == '' && selectedDelay == '') {
@@ -189,7 +194,6 @@ const Home = () => {
             }
         }
     };
-
 
     const handleDelete = (content: ContentType | null) => {
         let message = "";
@@ -227,7 +231,6 @@ const Home = () => {
             />
         </View>
     );
-
 
     return (
         <AuxHOC>

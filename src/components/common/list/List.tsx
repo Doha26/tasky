@@ -5,7 +5,7 @@ import {Table, TableWrapper, Row, Cell} from 'react-native-table-component';
 import {MaterialIcons} from '@expo/vector-icons'
 import {styles} from './styles';
 import Colors from "~/theming/colors";
-import {isOdd, randomInt} from "~/utils/method";
+import {isOdd, randomUUID} from "~/utils/method";
 import {ContentType} from "~/utils/model/Content";
 
 const propTypes = {
@@ -22,7 +22,7 @@ const defaultProps = {
 };
 
 const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
-    onFilterRow: (data: ContentType, flag: string, currentIndex: number) => void
+    onFilterRow: (flag: string, currentIndex: number) => void
     onRowSelected: (data: ContentType) => void
     onDeleteRow: (data: ContentType) => void
     data: Array<ContentType>;
@@ -38,10 +38,10 @@ const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
             alignItems: "center",
             justifyContent: "center",
         }}>
-            <TouchableOpacity onPress={() => onFilterRow(content, "UP", index)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow("UP", index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-upward"} size={22} color={Colors.blue}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onFilterRow(content, "DOWN", index)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow( "DOWN", index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-downward"} size={22} color={Colors.black100}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onDeleteRow(content)}>
@@ -57,25 +57,25 @@ const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
                     <Row data={ROW_HEAD_TITLES} style={styles.head} textStyle={styles.titleText}/>
                     {
                         data.map((content: ContentType, index) => (
-                            <TouchableHighlight key={(content.id ? content.id : randomInt(0, 10000))}
+                            <TouchableHighlight key={randomUUID()}
                                                 activeOpacity={0.2}
                                                 underlayColor={isOdd(index) ? Colors.white : Colors.filterViolet}
                                                 onPress={() => onRowSelected(content)}>
-                                <TableWrapper key={(content.id ? content.id + 1 : randomInt(0, 10000))}
+                                <TableWrapper key={randomUUID()}
                                               style={Object.assign({}, styles.row, {backgroundColor: isOdd(index) ? Colors.white : Colors.filterViolet})}>
-                                    <Cell key={(content.id ? content.id + 2 : randomInt(0, 10000))}
+                                    <Cell key={randomUUID()}
                                           data={content.name}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={(content.id ? content.id + 3 : randomInt(0, 10000))}
+                                    <Cell key={randomUUID()}
                                           data={content.type}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={(content.id ? content.id + 4 : randomInt(0, 10000))}
+                                    <Cell key={randomUUID()}
                                           data={content.delay}
                                           textStyle={styles.text}/>
 
-                                    <Cell key={(content.id ? content.id + 5 : randomInt(0, 10000))}
+                                    <Cell key={randomUUID()}
                                           data={ViewActions(content, index)}
                                           textStyle={styles.text}/>
 
