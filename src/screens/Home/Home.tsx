@@ -18,7 +18,14 @@ import Slider from '@react-native-community/slider';
 import Loader from "~/components/common/Loader";
 import {contentDelay, contentType} from "~/utils/data";
 import {ContentType} from "~/utils/model/Content";
-import {addContent, processing, removeAllContent, removeContent, updateContent} from "~/actions/content-actions";
+import {
+    addContent,
+    filterContent,
+    processing,
+    removeAllContent,
+    removeContent,
+    updateContent
+} from "~/actions/content-actions";
 import {showToast} from "~/utils/method";
 
 const Home = () => {
@@ -28,6 +35,8 @@ const Home = () => {
         UPDATE: 'UPDATE',
         DELETE_ROW: 'DELETE_ROW',
         DELETE_ALL: 'DELETE_ALL',
+        FILTER_UP: 'UP',
+        FILTER_DOWN: 'DOWN',
     };
 
     // Get the dispatcher
@@ -75,8 +84,66 @@ const Home = () => {
         setSelectedDelay(selected);
     };
 
-    const onFilterRow = (content: ContentType) => {
+    const onFilterRow = (content: ContentType, flag: string, currentIndex: number) => {
+        let upIndex: number, downIndex: number, payload: any = {flag: '', currentIndex: 0, upIndex: 0, downIndex: 0};
 
+        if (flag === ACTIONS.FILTER_UP) {
+            payload.flag = ACTIONS.FILTER_UP;
+            if (contents.length !== 1) {
+                if (contents.length == 2) {
+                    if (currentIndex != 0) {
+                        upIndex = 0;
+                        downIndex = 1;
+
+                        payload.currentIndex = currentIndex;
+                        payload.upIndex = upIndex;
+                        payload.downIndex = downIndex;
+
+                        dispatch(filterContent(payload);
+                    }
+                } else {
+                    if (currentIndex != 0) {
+                        upIndex = currentIndex - 1;
+                        downIndex = currentIndex + 1;
+
+                        payload.currentIndex = currentIndex;
+                        payload.upIndex = upIndex;
+                        payload.downIndex = downIndex;
+
+                        dispatch(filterContent(payload);
+                    }
+                }
+            }
+        } else {
+            payload.flag = ACTIONS.FILTER_DOWN;
+            if (contents.length !== 1) {
+                if (contents.length == 2) {
+                    if (currentIndex != 1) {
+                        upIndex = 0;
+                        downIndex = 1;
+
+                        payload.currentIndex = currentIndex;
+                        payload.upIndex = upIndex;
+                        payload.downIndex = downIndex;
+
+                        dispatch(filterContent(payload);
+                    }
+                } else {
+                    if (currentIndex != 0) {
+                        
+                        upIndex = currentIndex - 1;
+                        downIndex = currentIndex + 1;
+
+                        payload.currentIndex = currentIndex;
+                        payload.upIndex = upIndex;
+                        payload.downIndex = downIndex;
+
+                        dispatch(filterContent(payload);
+                    }
+                }
+            }
+            dispatch(filterContent(ACTIONS.FILTER_DOWN, content.id))
+        }
     };
 
     const onRowSelected = (content: ContentType) => {
@@ -160,6 +227,8 @@ const Home = () => {
             />
         </View>
     );
+
+
     return (
         <AuxHOC>
             <Loader loading={loading} message={""}/>
@@ -188,13 +257,13 @@ const Home = () => {
                              value={selectedType}/>
                 <LabelSelect data={contentDelay} onValueChange={handleSelectedDelay}
                              label={"Content delay"} value={selectedDelay}/>
-                <Slider
+                {editMode ? <Slider
                     style={{flex: 1, height: 40, marginHorizontal: 16}}
                     minimumValue={0}
                     maximumValue={1}
                     minimumTrackTintColor={Colors.violet}
                     maximumTrackTintColor={Colors.filterViolet}
-                />
+                /> : null}
                 <Button text={editMode ? "Update" : "Save"} color={Colors.violet}
                         onPress={() => editMode ? performAction(ACTIONS.UPDATE) : performAction(ACTIONS.ADD)}
                         tintColor={Colors.white}/>

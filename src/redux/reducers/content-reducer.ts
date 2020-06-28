@@ -61,7 +61,24 @@ export default (state = INITIAL_STATE, {type, payload}: { type: string, payload:
         case REMOVE_ALL_CONTENT:
             return {...state, loading: false, contents: []};
         case FILTER_CONTENT:
-            return {...state};
+            if (payload.flag == "UP") {
+                if (state.contents.length == 1) {
+                    return {...state, loading: false, contents: state.contents}
+                }else{
+
+                }
+            } else {
+                if (state.contents.length == 1) {
+                    return {...state, loading: false, contents: state.contents}
+                }else{
+
+                }
+            }
+            return {
+                ...state,
+                loading: false,
+
+            };
         default:
             return state;
     }

@@ -22,7 +22,7 @@ const defaultProps = {
 };
 
 const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
-    onFilterRow: (data: ContentType) => void
+    onFilterRow: (data: ContentType, flag: string, currentIndex: number) => void
     onRowSelected: (data: ContentType) => void
     onDeleteRow: (data: ContentType) => void
     data: Array<ContentType>;
@@ -30,7 +30,7 @@ const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
 
     const ROW_HEAD_TITLES = ['Name', 'Type', 'Delay', 'Actions'];
 
-    const ViewActions = (content: ContentType) => (
+    const ViewActions = (content: ContentType, index: number) => (
         <View style={{
             flex: 1,
             flexDirection: "row",
@@ -38,10 +38,10 @@ const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
             alignItems: "center",
             justifyContent: "center",
         }}>
-            <TouchableOpacity onPress={() => onFilterRow(content)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow(content, "UP", index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-upward"} size={22} color={Colors.blue}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onFilterRow(content)} style={{flexDirection: "row"}}>
+            <TouchableOpacity onPress={() => onFilterRow(content, "DOWN", index)} style={{flexDirection: "row"}}>
                 <MaterialIcons name={"arrow-downward"} size={22} color={Colors.black100}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onDeleteRow(content)}>
@@ -76,7 +76,7 @@ const List = ({onFilterRow, onRowSelected, onDeleteRow, data}: {
                                           textStyle={styles.text}/>
 
                                     <Cell key={(content.id ? content.id + 5 : randomInt(0, 10000))}
-                                          data={ViewActions(content)}
+                                          data={ViewActions(content, index)}
                                           textStyle={styles.text}/>
 
                                 </TableWrapper>

@@ -1,10 +1,9 @@
-
 import Toast from 'react-native-root-toast';
-
 
 export const isOdd = (number: number) => {
     return number % 2;
 };
+
 export const randomString = (an: string) => {
     an = an && an.toLowerCase();
     var str = "",
@@ -17,9 +16,11 @@ export const randomString = (an: string) => {
     }
     return str;
 };
+
 export const randomInt = (min: number, max: number) => { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
 export const showToast = (message: string) => {
     Toast.show(message, {
         duration: Toast.durations.LONG,

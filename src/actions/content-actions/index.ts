@@ -13,4 +13,4 @@ export const updateContent = (content: ContentType) => ({type: EDIT_CONTENT, pay
 
 export const removeAllContent = () => ({type: REMOVE_ALL_CONTENT, payload: null});
 
-export const filterContent = (flag: string) => ({type: FILTER_CONTENT, payload: flag});
+export const filterContent = (payload:any) => ({type: FILTER_CONTENT, payload: payload});
