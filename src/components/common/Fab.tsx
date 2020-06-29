@@ -3,6 +3,7 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
+    Platform,
 } from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons"
 import PropTypes from 'prop-types';
@@ -46,8 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.violet,
         position: 'absolute',
         right: 20,
-        zIndex:100,
-        bottom: 40,
+        bottom: Platform.select({android:20, ios:40}),
         borderRadius: 32.5,
         alignItems: 'center',
         justifyContent: 'center',
