@@ -26,15 +26,13 @@ const Fab = ({
     icon: string;
     onPress: () => void;
 }) => {
-    const {container} = styles;
-    const fabContainerStyle = [container];
 
     return (
         <TouchableOpacity
             activeOpacity={0.8}
             onPress={onPress}
-            style={fabContainerStyle}>
-            <View style={styles.fabContainer}>
+            style={styles.fabContainer}>
+            <View >
                 <MaterialIcons name={icon} size={32} color={Colors.white}/>
             </View>
         </TouchableOpacity>
@@ -42,20 +40,14 @@ const Fab = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginHorizontal: 8,
-        marginVertical: 2,
-        borderRadius: 6,
-    },
     fabContainer: {
         width: 65,
         height: 65,
         backgroundColor: Colors.violet,
         position: 'absolute',
         right: 20,
-        bottom: 50,
+        zIndex:100,
+        bottom: 40,
         borderRadius: 32.5,
         alignItems: 'center',
         justifyContent: 'center',
