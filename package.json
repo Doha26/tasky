@@ -22,7 +22,7 @@
     "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-modalize": "^2.0.4",
     "react-native-picker-select": "^7.0.0",
-    "react-native-reanimated": "~1.9.0",
+    "react-native-reanimated": "~2.10.0",
     "react-native-safe-area-context": "3.0.2",
     "react-native-root-toast": "^3.2.0",
     "react-native-screens": "~2.9.0",
